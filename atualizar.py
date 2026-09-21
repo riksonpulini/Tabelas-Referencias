@@ -40,8 +40,8 @@ I9_MAP = {
 }
 # páginas oficiais: id -> (url, extrator)
 OFICIAIS = {
-    "goinfraServ": ("https://www.goinfra.go.gov.br/custo-referencial-de-servicos/89", "mes_extenso"),
-    "goinfraComp": ("https://www.goinfra.go.gov.br/tabela-de-composicao/114", "mes_extenso"),
+#    "goinfraServ": ("https://www.goinfra.go.gov.br/custo-referencial-de-servicos/89", "mes_extenso"),
+#    "goinfraComp": ("https://www.goinfra.go.gov.br/tabela-de-composicao/114", "mes_extenso"),
 }
 
 

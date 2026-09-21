@@ -731,7 +731,7 @@ function persist(x){
 
 async function loadBase(){
   try{
-    const r=await fetch("data/tabelas.json?_="+Date.now(),{cache:"no-store"});
+    const r=await fetch("tabelas.json?_="+Date.now(),{cache:"no-store"});
     if(!r.ok) throw new Error(r.status);
     const j=await r.json();
     base=j.itens; meta=j.meta||null;

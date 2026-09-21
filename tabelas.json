@@ -1,19 +1,11 @@
 {
  "meta": {
   "gerado_em": "2026-09-21T00:00:00",
-  "ultima_execucao": "2026-09-21T18:23:26Z",
+  "ultima_execucao": "2026-09-21T18:48:07Z",
   "fontes": {
    "i9": {
     "ok": true,
     "bases_lidas": 21
-   },
-   "goinfraServ": {
-    "ok": false,
-    "erro": "nenhum mês encontrado na página"
-   },
-   "goinfraComp": {
-    "ok": false,
-    "erro": "nenhum mês encontrado na página"
    }
   }
  },

@@ -17,8 +17,8 @@ import sys
 import urllib.request
 from html.parser import HTMLParser
 
-ROOT = pathlib.Path(__file__).resolve().parent.parent
-DATA = ROOT / "data" / "tabelas.json"
+   ROOT = pathlib.Path(__file__).resolve().parent
+   DATA = ROOT / "tabelas.json"
 UA = "Mozilla/5.0 (compatible; TabelasReferenciaBot/1.0)"
 
 MES_ABREV = {"jan": 1, "fev": 2, "mar": 3, "abr": 4, "mai": 5, "jun": 6,

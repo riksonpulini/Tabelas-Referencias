@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tabelas de referência por localidade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,500..800&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --paper:#EEF1EE; --surface:#FBFCFB; --ink:#17262B; --muted:#586a6f; --line:#c5d0cc;
+  --accent:#0E5A6B; --accent-ink:#ffffff;
+  --ok:#0F6B4F; --ok-bg:#dcefe7; --warn:#8f5c00; --warn-bg:#f6e8c3; --late:#a8231b; --late-bg:#f6dad6; --none:#586a6f; --none-bg:#e1e7e4;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0F181B; --surface:#172327; --ink:#e6eeec; --muted:#9db0b0; --line:#2b3c40;
+    --accent:#6cc3d5; --accent-ink:#0b1a1e;
+    --ok:#66d1a6; --ok-bg:#153528; --warn:#e8b94a; --warn-bg:#3a2f12; --late:#f29088; --late-bg:#3d1f1c; --none:#9db0b0; --none-bg:#22322f;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0F181B; --surface:#172327; --ink:#e6eeec; --muted:#9db0b0; --line:#2b3c40;
+  --accent:#6cc3d5; --accent-ink:#0b1a1e;
+  --ok:#66d1a6; --ok-bg:#153528; --warn:#e8b94a; --warn-bg:#3a2f12; --late:#f29088; --late-bg:#3d1f1c; --none:#9db0b0; --none-bg:#22322f;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 15px/1.5 "Public Sans",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+.wrap{max-width:1080px;margin:0 auto;padding:28px 20px 56px}
+h1{font:700 30px/1.1 "Archivo","Arial Narrow",Arial,sans-serif;font-stretch:88%;letter-spacing:-.01em;margin:0 0 6px}
+.lead{margin:0 0 22px;color:var(--muted);max-width:62ch}
+button,select,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+.auto{margin:-12px 0 18px;font-size:13.5px;color:var(--muted)}
+.auto b{color:var(--ok)}
+.auto.warn b{color:var(--warn)}
+.filters{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px}
+.field label{display:block;font-weight:600;font-size:13px;margin-bottom:4px}
+.field select{width:100%;min-height:42px;padding:8px 10px;border:1px solid var(--line);border-radius:4px;background:var(--paper)}
+.field select:disabled{opacity:.55}
+
+/* carimbo de prancha */
+.stamp{display:grid;grid-template-columns:2fr 1fr 1fr;margin:22px 0 14px;border:2px solid var(--ink);background:var(--surface)}
+.stamp>div{padding:10px 14px;border-left:1px solid var(--ink)}
+.stamp>div:first-child{border-left:0}
+.stamp small{display:block;color:var(--muted);font-size:12px}
+.stamp strong{font:700 22px/1.15 "Archivo","Arial Narrow",Arial,sans-serif;font-stretch:88%}
+.stamp .n{font-size:22px}
+
+.group h2{font:600 16px/1.2 "Archivo",Arial,sans-serif;margin:22px 0 8px;padding-bottom:6px;border-bottom:2px solid var(--ink)}
+.group h2 span{color:var(--muted);font-weight:500;margin-left:6px}
+ul.rows{list-style:none;margin:0;padding:0}
+.head,.row{display:grid;grid-template-columns:2.2fr 1.4fr 1.6fr 1.1fr;gap:16px;align-items:start}
+.head{padding:0 4px 6px;font-size:12.5px;color:var(--muted)}
+.row{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px;margin-bottom:8px}
+.name strong{font:700 18px/1.2 "Archivo",Arial,sans-serif;display:block}
+.name span{display:block;color:var(--muted);font-size:13.5px}
+.src{margin-top:6px;font-size:12.5px;color:var(--muted)}
+.note{margin-top:3px;font-size:12.5px;color:var(--warn)}
+.ref label{display:none;font-size:12.5px;color:var(--muted)}
+.ref input[type=month]{min-height:40px;padding:6px 8px;border:1px solid var(--line);border-radius:4px;background:var(--paper);width:100%;max-width:190px}
+.ref small{display:block;margin-top:4px;color:var(--muted);font-size:12.5px}
+.badge{display:inline-block;padding:2px 9px;border-radius:99px;font-weight:600;font-size:13px}
+.b-ok{background:var(--ok-bg);color:var(--ok)}
+.b-warn{background:var(--warn-bg);color:var(--warn)}
+.b-late{background:var(--late-bg);color:var(--late)}
+.b-none{background:var(--none-bg);color:var(--none)}
+.status small{display:block;margin:5px 0;color:var(--muted);font-size:12.5px}
+.btn{min-height:36px;padding:5px 12px;border:1px solid var(--line);border-radius:4px;background:var(--paper);cursor:pointer}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
+.btn.small{min-height:32px;font-size:13.5px}
+.links{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.links a{color:var(--accent);font-weight:600}
+.empty{background:var(--surface);border:1px dashed var(--line);border-radius:6px;padding:28px;text-align:center;color:var(--muted)}
+.tools{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px;padding-top:16px;border-top:1px solid var(--line)}
+.foot{margin-top:14px;color:var(--muted);font-size:13px;max-width:78ch}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--paper);padding:9px 16px;border-radius:6px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+
+dialog{border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);padding:0;width:min(520px,calc(100% - 24px))}
+dialog::backdrop{background:rgba(0,0,0,.45)}
+dialog form{padding:18px;display:grid;gap:12px}
+dialog h3{margin:0;font:700 20px/1.2 "Archivo",Arial,sans-serif}
+dialog input,dialog select,dialog textarea{width:100%;min-height:40px;padding:7px 10px;border:1px solid var(--line);border-radius:4px;background:var(--paper)}
+dialog .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+dialog label{font-weight:600;font-size:13px;display:block;margin-bottom:3px}
+dialog .actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+
+@media (max-width:760px){
+  .wrap{padding:20px 14px 48px}
+  h1{font-size:25px}
+  .filters{grid-template-columns:1fr}
+  .stamp{grid-template-columns:1fr 1fr}
+  .stamp>div:first-child{grid-column:1/-1;border-bottom:1px solid var(--ink)}
+  .stamp>div:nth-child(2){border-left:0}
+  .head{display:none}
+  .row{grid-template-columns:1fr;gap:12px}
+  .ref label{display:block}
+  dialog .two{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){.toast{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Tabelas de referência por localidade</h1>
+  <p class="lead">Escolha o estado e, se houver, o município. O app lista as tabelas de custo que valem para o local, com o mês de referência de cada uma e o link para baixar.</p>
+  <p class="auto" id="auto" role="status">Carregando dados…</p>
+
+  <div class="filters">
+    <div class="field"><label for="uf">Estado</label><select id="uf"></select></div>
+    <div class="field"><label for="mun">Município</label><select id="mun"></select></div>
+    <div class="field"><label for="tab">Tabela</label><select id="tab"></select></div>
+  </div>
+
+  <div id="out"></div>
+
+  <div class="tools">
+    <button class="btn primary" id="add">Adicionar tabela</button>
+    <button class="btn" id="copy">Copiar lista deste local</button>
+    <button class="btn" id="reset">Descartar minhas alterações</button>
+  </div>
+  <p class="foot" id="rodape"></p>
+</div>
+
+<dialog id="dlg">
+  <form method="dialog" id="form">
+    <h3 id="dlgTitle">Tabela</h3>
+    <div class="two">
+      <div><label for="f_nome">Nome da tabela</label><input id="f_nome" required></div>
+      <div><label for="f_orgao">Órgão responsável</label><input id="f_orgao" required></div>
+    </div>
+    <div class="two">
+      <div><label for="f_esfera">Esfera</label>
+        <select id="f_esfera"><option>Federal</option><option>Estadual</option><option>Municipal</option></select></div>
+      <div><label for="f_uf">Estado</label><select id="f_uf"></select></div>
+    </div>
+    <div id="munBox"><label for="f_mun">Município</label><input id="f_mun"></div>
+    <div class="two">
+      <div><label for="f_area">Área de obra</label><input id="f_area" placeholder="Ex.: Edificações"></div>
+      <div><label for="f_freq">Frequência de publicação</label>
+        <select id="f_freq"><option value="mensal">Mensal</option><option value="bimestral">Bimestral</option><option value="trimestral">Trimestral</option><option value="semestral">Semestral</option><option value="anual">Anual</option><option value="variavel">Periodicidade variável</option></select></div>
+    </div>
+    <div class="two">
+      <div><label for="f_ref">Mês de referência vigente</label><input type="month" id="f_ref"></div>
+      <div><label for="f_url">Link oficial (opcional)</label><input type="url" id="f_url" placeholder="https://"></div>
+    </div>
+    <div class="actions">
+      <button type="button" class="btn" id="del">Remover</button>
+      <button type="button" class="btn" id="cancel">Cancelar</button>
+      <button type="submit" class="btn primary">Salvar</button>
+    </div>
+  </form>
+</dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script type="application/json" id="snapshot">{
+ "meta": {
+  "gerado_em": "2026-09-21T00:00:00",
+  "ultima_execucao": "",
+  "fontes": {}
+ },
+ "itens": [
+  {
+   "id": "sinapi",
+   "nome": "SINAPI",
+   "orgao": "Caixa Econômica Federal / IBGE",
+   "esfera": "Federal",
+   "ufs": [
+    "*"
+   ],
+   "municipio": "",
+   "area": "Edificações, saneamento e infraestrutura",
+   "freq": "mensal",
+   "ref": "2026-08",
+   "url": "https://www.caixa.gov.br/poder-publico/modernizacao-gestao/sinapi/Paginas/default.aspx",
+   "verificada": "",
+   "fonte": "i9 Orçamentos (agregador), liberada em 14/09/2026",
+   "nota": "",
+   "atualizado": ""
+  },
+  {
+   "id": "sicro",
+   "nome": "SICRO",
+   "orgao": "DNIT",
+   "esfera": "Federal",
+   "ufs": [
+    "*"
+   ],
+   "municipio": "",
+   "area": "Rodovias, ferrovias, hidrovias e obras de arte",
+   "freq": "trimestral",
+   "ref": "2026-04",
+   "url": "https://www.gov.br/dnit/pt-br/assuntos/planejamento-e-pesquisa/custos-referenciais/sistemas-de-custos/sicro/relatorios/relatorios-sicro",
+   "verificada": "",
+   "fonte": "i9 Orçamentos (agregador), liberada em 09/07/2026",
+   "nota": "",
+   "atualizado": ""
+  },
+  {
+   "id": "emop",
+   "nome": "Tabela EMOP-RJ",
+   "orgao": "EMOP-RJ (Empresa de Obras Públicas)",
+   "esfera": "Estadual",
+   "ufs": [
+    "RJ"
+   ],
+   "municipio": "",
+   "area": "Edificações e infraestrutura",
+   "freq": "mensal",
+   "ref": "2026-06",
+   "url": "https://www.rj.gov.br/emop/catalogos-emop",
+   "verificada": "",
+   "fonte": "i9 Orçamentos (agregador), liberada em 14/07/2026",
+   "nota": "Segundo o i9, as versões atuais não são gratuitas no site da EMOP.",
+   "atualizado": ""
+  },
+  {
+   "id": "scorio",
+   "nome": "SCO-Rio",
+   "orgao": "Prefeitura do Rio de Janeiro (pesquisa FGV)",
+   "esfera": "Municipal",
+   "ufs": [
+    "RJ"
+   ],
+   "municipio": "Rio de Janeiro",
+   "area": "Obras e serviços municipais",
+   "freq": "mensal",
+   "ref": "2026-06",
+   "url": "",
+   "verificada": "",
+   "fonte": "i9 Orçamentos (agregador), liberada em 15/07/2026",
+   "nota": "",
+   "atualizado": ""
+  },
+  {
+   "id": "obrassp",
+   "nome": "OBRAS-SP",
+   "orgao": "Governo do Estado de São Paulo",
+   "esfera": "Estadual",
+   "ufs": [
+    "SP"
+   ],
+   "municipio": "",
+   "area": "Construção civil",
+   "freq": "variavel",
+   "ref": "2026-06",
+   "url": "",
+   "verificada": "",
+   "fonte": "i9 Orçamentos (agregador), liberada em 10/07/2026",
+   "nota": "",
+   "atualizado": ""
+  },
+  {
+   "id": "educsp",
+   "nome": "Educação-SP",
+   "orgao": "FDE (Educação do Estado de SP)",
+   "esfera": "Estadual",
+   "ufs": [
+    "SP"
+   ],
+   "municipio": "",
+   "area": "Construção e reforma de escolas",
+   "freq": "variavel",
+   "ref": "2026-04",
+   "url": "",
+   "verificada": "",
+   "fonte": "i9 Orçamentos (agregador), liberada em 21/07/2026",
+   "nota": "",
+   "atualizado": ""
+  },
+  {
+   "id": "sptm",
+   "nome": "SIEC (CPTM / SPTM)",
+   "orgao": "CPTM",
+   "esfera": "Estadual",
+   "ufs": [
+    "SP"
+   ],
+   "municipio": "",
+   "area": "Infraestrutura ferroviária metropolitana",
+   "freq": "variavel",
+   "ref": "2026-04",
+   "url": "",
+   "verificada": "",
+   "fonte": "i9 Orçamentos (agregador), liberada em 13/07/2026",
+   "nota": "",
+   "atualizado": ""
+  },
+  {
+   "id": "derSP",
+   "nome": "Tabela de preços DER-SP",
+   "orgao": "DER-SP",
+   "esfera": "Estadual",
+   "ufs": [
+    "SP"
+   ],
+   "municipio": "",
+   "area": "Rodovias",
+   "freq": "variavel",
+   "ref": "",
+   "url": "",
+   "verificada": "",
+   "fonte": "Mês ainda não levantado",
+   "nota": "",
+   "atualizado": ""
+  },
+  {
+   "id": "siurb",
+   "nome": "SIURB-SP",
+   "orgao": "Prefeitura de São Paulo",
+   "esfera": "Municipal",
+   "ufs": [
+    "SP"
+   ],
+   "municipio": "São Paulo",
+   "area": "Infraestrutura urbana e obras",
+   "freq": "variavel",
+   "ref": "2026-01",
+   "url": "",
+   "verificada": "",
+   "fonte": "i9 Orçamentos (agregador), liberada em 09/04/2026",
+   "nota": "",
+   "atualizado": ""
+  },
+  {
+   "id": "sicor",
+   "nome": "SICOR-MG",
+   "orgao": "Governo de Minas Gerais",
+   "esfera": "Estadual",
+   "ufs": [
+    "MG"
+   ],
+   "municipio": "",
+   "area": "Edificações",
+   "freq": "variavel",
+   "ref": "2026-04",
+   "url": "",
+   "verificada": "",
+   "fonte": "i9 Orçamentos (agregador), liberada em 28/06/2026",
+   "nota": "Referencial em uso para edificações no estado.",
+   "atualizado": ""
+  },
+  {
+   "id": "setop",
+   "nome": "SETOP / SEINFRA-MG",
+   "orgao": "Governo de Minas Gerais",
+   "esfera": "Estadual",
+   "ufs": [
+    "MG"
+   ],
+   "municipio": "",
+   "area": "Edificações",
+   "freq": "variavel",
+   "ref": "2023-10",
+   "url": "",
+   "verificada": "",
+   "fonte": "i9 Orçamentos (agregador), liberada em 29/07/2024",
+   "nota": "Segundo o i9, o governo descontinuou esta tabela; vale só para obra antiga nesse padrão.",
+   "atualizado": ""
+  },
+  {
+   "id": "sudecap",
+   "nome": "SUDECAP-BH",
+   "orgao": "Prefeitura de Belo Horizonte",
+   "esfera": "Municipal",
+   "ufs": [
+    "MG"
+   ],
+   "municipio": "Belo Horizonte",
+   "area": "Obras e serviços municipais",
+   "freq": "variavel",
+   "ref": "2026-04",
+   "url": "",
+   "verificada": "",
+   "fonte": "i9 Orçamentos (agregador), liberada em 19/06/2026",
+   "nota": "",
+   "atualizado": ""
+  },
+  {
+   "id": "seinfraCE",
+   "nome": "Tabela de Custos SEINFRA-CE",
+   "orgao": "SEINFRA (Governo do Ceará)",
+   "esfera": "Estadual",
+   "ufs": [
+    "CE"
+   ],
+   "municipio": "",
+   "area": "Edificações e infraestrutura",
+   "freq": "variavel",
+   "ref": "2023-10",
+   "url": "https://www.seinfra.ce.gov.br/tabela-de-custos/",
+   "verificada": "",
+   "fonte": "Site oficial: versão 028 vigente desde 24/10/2023",
+   "nota": "Os materiais betuminosos (ANP) têm tabela própria, atualizada todo mês (versão 2026/09 no site oficial).",
+   "atualizado": ""
+  },
+  {
+   "id": "orse",
+   "nome": "ORSE",
+   "orgao": "CEHOP (Governo de Sergipe)",
+   "esfera": "Estadual",
+   "ufs": [
+    "SE"
+   ],
+   "municipio": "",
+   "area": "Edificações e infraestrutura",
+   "freq": "mensal",
+   "ref": "2026-06",
+   "url": "",
+   "verificada": "",
+   "fonte": "i9 Orçamentos (agregador), liberada em 20/08/2026",
+   "nota": "",
+   "atualizado": ""
+  },
+  {
+   "id": "sedop",
+   "nome": "SEDOP-PA (SEOP)",
+   "orgao": "Secretaria de Obras Públicas do Pará",
+   "esfera": "Estadual",
+   "ufs": [
+    "PA"
+   ],
+   "municipio": "",
+   "area": "Obras públicas",
+   "freq": "variavel",
+   "ref": "2026-03",
+   "url": "",
+   "verificada": "",
+   "fonte": "i9 Orçamentos (agregador), liberada em 06/05/2026",
+   "nota": "",
+   "atualizado": ""
+  },
+  {
+   "id": "goinfraServ",
+   "nome": "GOINFRA – Custo referencial de serviços",
+   "orgao": "GOINFRA (ex-AGETOP)",
+   "esfera": "Estadual",
+   "ufs": [
+    "GO"
+   ],
+   "municipio": "",
+   "area": "Obras civis e rodoviárias",
+   "freq": "bimestral",
+   "ref": "2026-04",
+   "url": "https://www.goinfra.go.gov.br/custo-referencial-de-servicos/89",
+   "verificada": "",
+   "fonte": "Site oficial: abr/2026 publicada em 19/06/2026",
+   "nota": "Confira no site se já saiu a referência de jun/2026.",
+   "atualizado": ""
+  },
+  {
+   "id": "goinfraComp",
+   "nome": "GOINFRA – Tabela de composição de preços",
+   "orgao": "GOINFRA (ex-AGETOP)",
+   "esfera": "Estadual",
+   "ufs": [
+    "GO"
+   ],
+   "municipio": "",
+   "area": "Composições de obras civis e rodoviárias",
+   "freq": "bimestral",
+   "ref": "2026-04",
+   "url": "https://www.goinfra.go.gov.br/tabela-de-composicao/114",
+   "verificada": "",
+   "fonte": "Site oficial: abr/2026 publicada em 01/07/2026",
+   "nota": "",
+   "atualizado": ""
+  },
+  {
+   "id": "saneago",
+   "nome": "SANEAGO",
+   "orgao": "SANEAGO (saneamento de Goiás)",
+   "esfera": "Estadual",
+   "ufs": [
+    "GO"
+   ],
+   "municipio": "",
+   "area": "Saneamento",
+   "freq": "variavel",
+   "ref": "2023-10",
+   "url": "",
+   "verificada": "",
+   "fonte": "i9 Orçamentos (agregador), liberada em 24/09/2024",
+   "nota": "",
+   "atualizado": ""
+  },
+  {
+   "id": "derESedif",
+   "nome": "DER-ES / IOPES – Edificações",
+   "orgao": "DER-ES / IOPES",
+   "esfera": "Estadual",
+   "ufs": [
+    "ES"
+   ],
+   "municipio": "",
+   "area": "Edificações",
+   "freq": "variavel",
+   "ref": "2026-05",
+   "url": "https://der.es.gov.br/referencial-de-precos-edificacoes",
+   "verificada": "",
+   "fonte": "i9 Orçamentos (agregador), liberada em 28/08/2026",
+   "nota": "",
+   "atualizado": ""
+  },
+  {
+   "id": "derESrod",
+   "nome": "DER-ES / IOPES – Rodovias",
+   "orgao": "DER-ES / IOPES",
+   "esfera": "Estadual",
+   "ufs": [
+    "ES"
+   ],
+   "municipio": "",
+   "area": "Rodovias",
+   "freq": "variavel",
+   "ref": "2026-02",
+   "url": "https://der.es.gov.br/referencial-de-precos-rodovias",
+   "verificada": "",
+   "fonte": "Nota de uso de fev/2026 no site oficial",
+   "nota": "Pode haver referência mais recente publicada.",
+   "atualizado": ""
+  },
+  {
+   "id": "caesb",
+   "nome": "CAESB-DF",
+   "orgao": "CAESB (Distrito Federal)",
+   "esfera": "Estadual",
+   "ufs": [
+    "DF"
+   ],
+   "municipio": "",
+   "area": "Saneamento",
+   "freq": "variavel",
+   "ref": "2026-01",
+   "url": "",
+   "verificada": "",
+   "fonte": "i9 Orçamentos (agregador), liberada em 19/03/2026",
+   "nota": "",
+   "atualizado": ""
+  },
+  {
+   "id": "derPR",
+   "nome": "DER-PR",
+   "orgao": "DER-PR",
+   "esfera": "Estadual",
+   "ufs": [
+    "PR"
+   ],
+   "municipio": "",
+   "area": "Rodovias",
+   "freq": "variavel",
+   "ref": "2025-08",
+   "url": "",
+   "verificada": "",
+   "fonte": "i9 Orçamentos (agregador), liberada em 16/02/2026",
+   "nota": "",
+   "atualizado": ""
+  },
+  {
+   "id": "secid",
+   "nome": "SECID-PR",
+   "orgao": "Secretaria das Cidades do Paraná",
+   "esfera": "Estadual",
+   "ufs": [
+    "PR"
+   ],
+   "municipio": "",
+   "area": "Edificações",
+   "freq": "variavel",
+   "ref": "2025-02",
+   "url": "",
+   "verificada": "",
+   "fonte": "i9 Orçamentos (agregador), liberada em 14/04/2025",
+   "nota": "",
+   "atualizado": ""
+  },
+  {
+   "id": "smop",
+   "nome": "SMOP Curitiba",
+   "orgao": "Prefeitura de Curitiba",
+   "esfera": "Municipal",
+   "ufs": [
+    "PR"
+   ],
+   "municipio": "Curitiba",
+   "area": "Obras municipais",
+   "freq": "variavel",
+   "ref": "2023-04",
+   "url": "",
+   "verificada": "",
+   "fonte": "i9 Orçamentos (agregador), liberada em 06/03/2024",
+   "nota": "",
+   "atualizado": ""
+  },
+  {
+   "id": "embasa",
+   "nome": "EMBASA-BA",
+   "orgao": "EMBASA (Bahia)",
+   "esfera": "Estadual",
+   "ufs": [
+    "BA"
+   ],
+   "municipio": "",
+   "area": "Saneamento",
+   "freq": "variavel",
+   "ref": "2025-06",
+   "url": "",
+   "verificada": "",
+   "fonte": "i9 Orçamentos (agregador), liberada em 07/10/2025",
+   "nota": "",
+   "atualizado": ""
+  },
+  {
+   "id": "derRO",
+   "nome": "Tabela Regional DER-RO",
+   "orgao": "DER-RO",
+   "esfera": "Estadual",
+   "ufs": [
+    "RO"
+   ],
+   "municipio": "",
+   "area": "Rodovias (complementa o SICRO)",
+   "freq": "variavel",
+   "ref": "2026-01",
+   "url": "https://rondonia.ro.gov.br/tabela-referencial-de-precos-regionais-de-obras-rodoviarias-der-ro-janeiro-2026/",
+   "verificada": "",
+   "fonte": "Site oficial: data-base jan/2026",
+   "nota": "O DER-RO adota o SICRO e publica esta tabela regional como complemento.",
+   "atualizado": ""
+  },
+  {
+   "id": "sieSC",
+   "nome": "Referencial de preços SIE-SC",
+   "orgao": "SIE (Secretaria de Infraestrutura de SC)",
+   "esfera": "Estadual",
+   "ufs": [
+    "SC"
+   ],
+   "municipio": "",
+   "area": "Rodovias e edificações",
+   "freq": "variavel",
+   "ref": "",
+   "url": "https://www.sie.sc.gov.br/referencial-de-precos",
+   "verificada": "",
+   "fonte": "Mês ainda não levantado",
+   "nota": "",
+   "atualizado": ""
+  },
+  {
+   "id": "sinfraMT",
+   "nome": "Boletim de preços SINFRA-MT",
+   "orgao": "SINFRA (Governo de Mato Grosso)",
+   "esfera": "Estadual",
+   "ufs": [
+    "MT"
+   ],
+   "municipio": "",
+   "area": "Obras civis e transportes",
+   "freq": "variavel",
+   "ref": "",
+   "url": "",
+   "verificada": "",
+   "fonte": "Mês ainda não levantado",
+   "nota": "",
+   "atualizado": ""
+  },
+  {
+   "id": "agesul",
+   "nome": "Tabela AGESUL",
+   "orgao": "AGESUL (Governo de Mato Grosso do Sul)",
+   "esfera": "Estadual",
+   "ufs": [
+    "MS"
+   ],
+   "municipio": "",
+   "area": "Edificações e rodovias",
+   "freq": "variavel",
+   "ref": "",
+   "url": "",
+   "verificada": "",
+   "fonte": "Mês ainda não levantado",
+   "nota": "",
+   "atualizado": ""
+  }
+ ]
+}</script>
+<script>
+const OLD_KEYS = ["tabelas_ref_v2","tabelas_ref_v1"];
+const KEY = "tabelas_ref_local_v3";
+const UFS = {AC:"Acre",AL:"Alagoas",AP:"Amapá",AM:"Amazonas",BA:"Bahia",CE:"Ceará",DF:"Distrito Federal",ES:"Espírito Santo",GO:"Goiás",MA:"Maranhão",MT:"Mato Grosso",MS:"Mato Grosso do Sul",MG:"Minas Gerais",PA:"Pará",PB:"Paraíba",PR:"Paraná",PE:"Pernambuco",PI:"Piauí",RJ:"Rio de Janeiro",RN:"Rio Grande do Norte",RS:"Rio Grande do Sul",RO:"Rondônia",RR:"Roraima",SC:"Santa Catarina",SP:"São Paulo",SE:"Sergipe",TO:"Tocantins"};
+const FREQ = {mensal:"Publicação mensal",bimestral:"Publicação bimestral",trimestral:"Publicação trimestral",semestral:"Publicação semestral",anual:"Publicação anual",variavel:"Periodicidade variável"};
+const LIMITS = {mensal:[2,3],bimestral:[4,6],trimestral:[5,7],semestral:[9,12],anual:[14,17],variavel:[9,12]};
+
+/* ---------- dados: JSON central (atualizado pelo robô) + ajustes locais ---------- */
+let base = [];          // catálogo vindo de data/tabelas.json
+let meta = null;
+let local = loadLocal(); // {edits:{id:{...,ts}}, custom:[...], removed:[ids]}
+let items = [];
+
+function loadLocal(){
+  try{const r=localStorage.getItem(KEY); if(r){const o=JSON.parse(r); if(o&&o.edits) return o;}}catch(e){}
+  return {edits:{},custom:[],removed:[]};
+}
+function saveLocal(){ try{localStorage.setItem(KEY,JSON.stringify(local));}catch(e){} }
+
+function rebuild(){
+  const rem=new Set(local.removed);
+  items=base.filter(b=>!rem.has(b.id)).map(b=>{
+    const e=local.edits[b.id];
+    if(!e) return {...b};
+    /* ajuste seu só vale se for igual ou mais novo que a leitura automática */
+    if(e.ts >= (b.atualizado||"")) return {...b,...e.data};
+    return {...b, verificada:e.data.verificada||b.verificada};
+  }).concat(local.custom.map(c=>({...c})));
+}
+function persist(x){
+  const data={nome:x.nome,orgao:x.orgao,esfera:x.esfera,ufs:x.ufs,municipio:x.municipio,area:x.area,freq:x.freq,ref:x.ref,url:x.url,verificada:x.verificada,fonte:x.fonte,nota:x.nota};
+  if(String(x.id).startsWith("c")){
+    const i=local.custom.findIndex(c=>c.id===x.id);
+    if(i>=0) local.custom[i]={...x}; else local.custom.push({...x});
+  } else local.edits[x.id]={ts:todayISO(),data};
+  saveLocal();
+}
+
+async function loadBase(){
+  try{
+    const r=await fetch("data/tabelas.json?_="+Date.now(),{cache:"no-store"});
+    if(!r.ok) throw new Error(r.status);
+    const j=await r.json();
+    base=j.itens; meta=j.meta||null;
+  }catch(e){
+    try{ base=JSON.parse(document.getElementById("snapshot").textContent).itens; meta=null; }catch(e2){ base=[]; }
+    setAuto("Não foi possível carregar os dados atualizados; mostrando a cópia de 21/09/2026.",true);
+    return;
+  }
+  const fs=meta&&meta.fontes?Object.entries(meta.fontes):[];
+  const falhas=fs.filter(([k,v])=>!v.ok).map(([k])=>k);
+  if(meta&&meta.ultima_execucao){
+    const d=new Date(meta.ultima_execucao);
+    let t="Dados atualizados automaticamente em <b>"+d.toLocaleDateString("pt-BR")+" às "+d.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})+"</b>.";
+    if(falhas.length) t+=" Não consegui ler agora: "+falhas.map(esc).join(", ")+" (mantido o último valor conhecido).";
+    setAuto(t,falhas.length>0);
+  } else setAuto("Dados carregados. A primeira leitura automática ainda não rodou.",true);
+}
+function setAuto(html,warn){const e=document.getElementById("auto");e.innerHTML=html;e.className="auto"+(warn?" warn":"")}
+
+/* ---------- utilidades ---------- */
+const $ = s=>document.querySelector(s);
+const esc = s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove("show"),2200)}
+function todayISO(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function fmtDate(iso){const [y,m,d]=iso.split("-");return d+"/"+m+"/"+y}
+function fmtRef(r){if(!r)return "—";const [y,m]=r.split("-");return m+"/"+y}
+function daysSince(iso){return Math.floor((new Date(todayISO())-new Date(iso))/86400000)}
+
+function status(x){
+  if(!x.ref) return {c:"b-none",t:"Sem referência"};
+  const lim = LIMITS[x.freq]||LIMITS.variavel;
+  const [y,m]=x.ref.split("-").map(Number), n=new Date();
+  const diff=(n.getFullYear()*12+n.getMonth()+1)-(y*12+m);
+  if(diff<=lim[0]) return {c:"b-ok",t:"Provavelmente em dia"};
+  if(diff<=lim[1]) return {c:"b-warn",t:"Verificar nova publicação"};
+  return {c:"b-late",t:"Possível defasagem"};
+}
+
+function fillSelects(){
+  const cur=$("#uf").value;
+  $("#uf").innerHTML='<option value="">Selecione o estado</option>'+Object.entries(UFS).map(([k,v])=>`<option value="${k}">${k} – ${v}</option>`).join("");
+  $("#uf").value=cur;
+  $("#f_uf").innerHTML='<option value="*">Todos (nacional)</option>'+Object.entries(UFS).map(([k,v])=>`<option value="${k}">${k} – ${v}</option>`).join("");
+}
+function munsOf(uf){return [...new Set(items.filter(x=>x.municipio&&x.ufs.includes(uf)).map(x=>x.municipio))].sort((a,b)=>a.localeCompare(b,"pt-BR"))}
+function fillMun(){
+  const uf=$("#uf").value, cur=$("#mun").value, ms=uf?munsOf(uf):[];
+  const sel=$("#mun");
+  if(!uf){sel.innerHTML='<option value="">Escolha o estado primeiro</option>';sel.disabled=true;return}
+  if(!ms.length){sel.innerHTML='<option value="">Nenhum município cadastrado</option>';sel.disabled=true;return}
+  sel.disabled=false;
+  sel.innerHTML='<option value="">Sem município (federal e estadual)</option>'+ms.map(m=>`<option>${esc(m)}</option>`).join("");
+  sel.value=ms.includes(cur)?cur:"";
+}
+function applicable(){
+  const uf=$("#uf").value, mun=$("#mun").value;
+  if(!uf) return [];
+  return items.filter(x=>{
+    const inUf=x.ufs.includes("*")||x.ufs.includes(uf);
+    if(!inUf) return false;
+    if(x.esfera==="Municipal") return mun && x.municipio===mun;
+    return true;
+  });
+}
+function fillTab(list){
+  const sel=$("#tab"), cur=sel.value;
+  sel.innerHTML='<option value="">Todas as tabelas disponíveis</option>'+list.map(x=>`<option value="${esc(x.id)}">${esc(x.nome)}</option>`).join("");
+  sel.value=list.some(x=>x.id===cur)?cur:"";
+}
+function searchUrl(x){return "https://www.google.com/search?q="+encodeURIComponent(x.nome+" "+x.orgao+" tabela de preços site oficial")}
+
+function rowHtml(x){
+  const s=status(x);
+  let conf='<small>Não confirmada por você</small>';
+  if(x.verificada){const d=daysSince(x.verificada);conf=`<small>Confirmada em ${fmtDate(x.verificada)}${d>35?` (há ${d} dias)`:""}</small>`}
+  const link=x.url?`<a href="${esc(x.url)}" target="_blank" rel="noopener noreferrer">Página oficial e download</a>`:`<a href="${esc(searchUrl(x))}" target="_blank" rel="noopener noreferrer">Buscar página oficial</a>`;
+  return `<li class="row" data-id="${esc(x.id)}">
+    <div class="name"><strong>${esc(x.nome)}</strong><span>${esc(x.orgao)}</span><span>${esc(x.area)}</span>${x.fonte?`<div class="src">Mês: ${esc(x.fonte)}</div>`:""}${x.nota?`<div class="note">${esc(x.nota)}</div>`:""}</div>
+    <div class="ref"><label for="r_${esc(x.id)}">Mês de referência</label><input type="month" id="r_${esc(x.id)}" data-act="ref" value="${esc(x.ref)}"><small>${FREQ[x.freq]||""}</small></div>
+    <div class="status"><span class="badge ${s.c}">${s.t}</span>${conf}<button class="btn small" data-act="ok">Confirmei hoje</button></div>
+    <div class="links">${link}<button class="btn small" data-act="edit">Editar</button></div>
+  </li>`;
+}
+
+function render(){
+  fillMun();
+  const uf=$("#uf").value, mun=$("#mun").value, out=$("#out");
+  const list=applicable(); fillTab(list);
+  if(!uf){out.innerHTML='<div class="empty" style="margin-top:22px">Escolha um estado para ver as tabelas de referência disponíveis.</div>';return}
+  const tabId=$("#tab").value;
+  const shown=(tabId?list.filter(x=>x.id===tabId):list).slice().sort((a,b)=>a.nome.localeCompare(b.nome,"pt-BR"));
+  const local_=UFS[uf]+(mun?" · "+mun:"");
+  let html=`<div class="stamp"><div><small>Local</small><strong>${esc(local_)}</strong></div><div><small>Tabelas exibidas</small><strong class="n">${shown.length}</strong></div><div><small>Consulta em</small><strong class="n">${fmtDate(todayISO())}</strong></div></div>`;
+  if(!tabId&&!list.some(x=>x.esfera==="Estadual")) html+=`<div class="empty" style="margin-bottom:14px">Ainda não há tabela estadual cadastrada para ${esc(UFS[uf])}. Abaixo estão as tabelas federais; use "Adicionar tabela" para incluir a do estado.</div>`;
+  if(!shown.length){out.innerHTML=html+'<div class="empty">Nenhuma tabela cadastrada para este local. Use "Adicionar tabela" para incluir.</div>';return}
+  html+='<div class="head" aria-hidden="true"><div>Tabela</div><div>Referência vigente</div><div>Situação</div><div>Download</div></div>';
+  for(const g of ["Federal","Estadual","Municipal"]){
+    const gl=shown.filter(x=>x.esfera===g); if(!gl.length) continue;
+    html+=`<section class="group"><h2>${g}<span>${gl.length}</span></h2><ul class="rows">${gl.map(rowHtml).join("")}</ul></section>`;
+  }
+  out.innerHTML=html;
+}
+
+$("#uf").addEventListener("change",()=>{$("#mun").value="";$("#tab").value="";render()});
+$("#mun").addEventListener("change",()=>{$("#tab").value="";render()});
+$("#tab").addEventListener("change",render);
+
+$("#out").addEventListener("click",e=>{
+  const b=e.target.closest("[data-act]"); if(!b) return;
+  const id=b.closest(".row").dataset.id, x=items.find(i=>i.id===id); if(!x) return;
+  if(b.dataset.act==="ok"){x.verificada=todayISO();persist(x);rebuild();render();toast("Confirmação registrada")}
+  if(b.dataset.act==="edit") openDlg(x);
+});
+$("#out").addEventListener("change",e=>{
+  if(e.target.dataset.act!=="ref") return;
+  const id=e.target.closest(".row").dataset.id, x=items.find(i=>i.id===id); if(!x) return;
+  x.ref=e.target.value; x.verificada=todayISO(); x.fonte="Informado por você";
+  persist(x); rebuild(); render(); toast("Mês atualizado e confirmado hoje");
+});
+
+/* ---------- diálogo ---------- */
+let editing=null;
+function openDlg(x){
+  editing=x||null;
+  $("#dlgTitle").textContent=x?"Editar tabela":"Adicionar tabela";
+  $("#f_nome").value=x?.nome||""; $("#f_orgao").value=x?.orgao||"";
+  $("#f_esfera").value=x?.esfera||"Estadual";
+  $("#f_uf").value=x?(x.ufs.includes("*")?"*":x.ufs[0]):($("#uf").value||"*");
+  $("#f_mun").value=x?.municipio||($("#mun").value||"");
+  $("#f_area").value=x?.area||""; $("#f_freq").value=x?.freq||"variavel";
+  $("#f_ref").value=x?.ref||""; $("#f_url").value=x?.url||"";
+  $("#del").style.display=x?"":"none";
+  syncMun(); $("#dlg").showModal();
+}
+function syncMun(){$("#munBox").style.display=$("#f_esfera").value==="Municipal"?"":"none"}
+$("#f_esfera").addEventListener("change",syncMun);
+$("#add").addEventListener("click",()=>openDlg(null));
+$("#cancel").addEventListener("click",()=>$("#dlg").close());
+$("#form").addEventListener("submit",e=>{
+  const esfera=$("#f_esfera").value, uf=$("#f_uf").value;
+  const data={nome:$("#f_nome").value.trim(),orgao:$("#f_orgao").value.trim(),esfera,ufs:[esfera==="Federal"?"*":uf],municipio:esfera==="Municipal"?$("#f_mun").value.trim():"",area:$("#f_area").value.trim(),freq:$("#f_freq").value,ref:$("#f_ref").value,url:$("#f_url").value.trim()};
+  if(editing){
+    const refChanged=data.ref!==editing.ref;
+    Object.assign(editing,data);
+    if(refChanged){editing.verificada=todayISO();editing.fonte="Informado por você"}
+    persist(editing);
+  } else {
+    persist({id:"c"+Date.now(),verificada:data.ref?todayISO():"",fonte:data.ref?"Informado por você":"",nota:"",atualizado:"",...data});
+  }
+  rebuild(); render(); toast("Tabela salva");
+});
+$("#del").addEventListener("click",()=>{
+  if(!editing||!confirm("Remover \""+editing.nome+"\" da sua visualização?")) return;
+  if(String(editing.id).startsWith("c")) local.custom=local.custom.filter(c=>c.id!==editing.id);
+  else {local.removed.push(editing.id);delete local.edits[editing.id]}
+  saveLocal(); $("#dlg").close(); rebuild(); render(); toast("Tabela removida");
+});
+
+/* ---------- ferramentas ---------- */
+$("#copy").addEventListener("click",()=>{
+  const uf=$("#uf").value; if(!uf){toast("Escolha um estado primeiro");return}
+  const mun=$("#mun").value;
+  const txt="Tabelas de referência – "+UFS[uf]+(mun?" / "+mun:"")+" (consulta em "+fmtDate(todayISO())+")\n"+
+    applicable().map(x=>"- "+x.nome+" ("+x.orgao+"): ref. "+fmtRef(x.ref)+(x.url?" – "+x.url:"")).join("\n");
+  const fallback=()=>{const t=document.createElement("textarea");t.value=txt;document.body.appendChild(t);t.select();try{document.execCommand("copy");toast("Lista copiada")}catch(e){toast("Não foi possível copiar")}t.remove()};
+  if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(()=>toast("Lista copiada"),fallback); else fallback();
+});
+$("#reset").addEventListener("click",()=>{
+  if(confirm("Descartar suas confirmações, edições e tabelas adicionadas neste navegador? Os dados automáticos continuam.")){local={edits:{},custom:[],removed:[]};saveLocal();rebuild();render();toast("Alterações descartadas")}
+});
+
+$("#rodape").textContent="Os meses são lidos automaticamente todos os dias. Onde aparece \"i9 Orçamentos (agregador)\", o mês vem de um site de terceiros que replica as tabelas oficiais e pode atrasar em relação ao órgão; confira na página oficial e clique em \"Confirmei hoje\". Suas confirmações, edições e tabelas adicionadas ficam salvas só neste navegador.";
+
+(async function init(){
+  fillSelects();
+  await loadBase();
+  rebuild(); render();
+})();
+</script>
+</body>
+</html>

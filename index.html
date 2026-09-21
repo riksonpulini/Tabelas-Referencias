@@ -105,11 +105,19 @@ dialog .actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
   dialog .two{grid-template-columns:1fr}
 }
 @media (prefers-reduced-motion:reduce){.toast{transition:none}}
+.mes{font:600 16px/1.3 "Public Sans",system-ui,sans-serif;min-height:40px;display:flex;align-items:center}
+.dbody{padding:20px;display:grid;gap:14px}
+.dbody h3{margin:0;font:700 22px/1.2 "Archivo",Arial,sans-serif}
+dl{display:grid;grid-template-columns:170px 1fr;gap:10px 14px;margin:0}
+dt{font-weight:600;font-size:13px;color:var(--muted)}
+dd{margin:0}
+.dbody .actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+@media (max-width:760px){dl{grid-template-columns:1fr;gap:2px}dd{margin-bottom:10px}}
 </style>
 </head>
 <body>
 <div class="wrap">
-     <img src="logo.png.png" alt="Logo" style="height:56px;width:auto;display:block;margin-bottom:14px">
+  <img src="logo.png.png" alt="Logo" onerror="this.remove()" style="height:56px;width:auto;display:block;margin-bottom:14px">
   <h1>Tabelas de referência por localidade</h1>
   <p class="lead">Escolha o estado e, se houver, o município. O app lista as tabelas de custo que valem para o local, com o mês de referência de cada uma e o link para baixar.</p>
   <p class="auto" id="auto" role="status">Carregando dados…</p>
@@ -123,41 +131,20 @@ dialog .actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
   <div id="out"></div>
 
   <div class="tools">
-    <button class="btn primary" id="add">Adicionar tabela</button>
-    <button class="btn" id="copy">Copiar lista deste local</button>
-    <button class="btn" id="reset">Descartar minhas alterações</button>
+    <button class="btn primary" id="copy">Copiar lista deste local</button>
   </div>
   <p class="foot" id="rodape"></p>
 </div>
 
-<dialog id="dlg">
-  <form method="dialog" id="form">
-    <h3 id="dlgTitle">Tabela</h3>
-    <div class="two">
-      <div><label for="f_nome">Nome da tabela</label><input id="f_nome" required></div>
-      <div><label for="f_orgao">Órgão responsável</label><input id="f_orgao" required></div>
-    </div>
-    <div class="two">
-      <div><label for="f_esfera">Esfera</label>
-        <select id="f_esfera"><option>Federal</option><option>Estadual</option><option>Municipal</option></select></div>
-      <div><label for="f_uf">Estado</label><select id="f_uf"></select></div>
-    </div>
-    <div id="munBox"><label for="f_mun">Município</label><input id="f_mun"></div>
-    <div class="two">
-      <div><label for="f_area">Área de obra</label><input id="f_area" placeholder="Ex.: Edificações"></div>
-      <div><label for="f_freq">Frequência de publicação</label>
-        <select id="f_freq"><option value="mensal">Mensal</option><option value="bimestral">Bimestral</option><option value="trimestral">Trimestral</option><option value="semestral">Semestral</option><option value="anual">Anual</option><option value="variavel">Periodicidade variável</option></select></div>
-    </div>
-    <div class="two">
-      <div><label for="f_ref">Mês de referência vigente</label><input type="month" id="f_ref"></div>
-      <div><label for="f_url">Link oficial (opcional)</label><input type="url" id="f_url" placeholder="https://"></div>
-    </div>
+<dialog id="dlg" aria-labelledby="dTitle">
+  <div class="dbody">
+    <h3 id="dTitle"></h3>
+    <dl id="dList"></dl>
     <div class="actions">
-      <button type="button" class="btn" id="del">Remover</button>
-      <button type="button" class="btn" id="cancel">Cancelar</button>
-      <button type="submit" class="btn primary">Salvar</button>
+      <a class="btn primary" id="dLink" target="_blank" rel="noopener noreferrer" style="text-decoration:none;display:inline-flex;align-items:center">Página oficial e download</a>
+      <button type="button" class="btn" id="dClose">Fechar</button>
     </div>
-  </form>
+  </div>
 </dialog>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -693,73 +680,38 @@ dialog .actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
  ]
 }</script>
 <script>
-const OLD_KEYS = ["tabelas_ref_v2","tabelas_ref_v1"];
-const KEY = "tabelas_ref_local_v3";
 const UFS = {AC:"Acre",AL:"Alagoas",AP:"Amapá",AM:"Amazonas",BA:"Bahia",CE:"Ceará",DF:"Distrito Federal",ES:"Espírito Santo",GO:"Goiás",MA:"Maranhão",MT:"Mato Grosso",MS:"Mato Grosso do Sul",MG:"Minas Gerais",PA:"Pará",PB:"Paraíba",PR:"Paraná",PE:"Pernambuco",PI:"Piauí",RJ:"Rio de Janeiro",RN:"Rio Grande do Norte",RS:"Rio Grande do Sul",RO:"Rondônia",RR:"Roraima",SC:"Santa Catarina",SP:"São Paulo",SE:"Sergipe",TO:"Tocantins"};
-const FREQ = {mensal:"Publicação mensal",bimestral:"Publicação bimestral",trimestral:"Publicação trimestral",semestral:"Publicação semestral",anual:"Publicação anual",variavel:"Periodicidade variável"};
+const FREQ = {mensal:"Publicação mensal",bimestral:"Publicação bimestral",trimestral:"Publicação trimestral",semestral:"Publicação semestral",anual:"Publicação anual",variavel:"Periodicidade variável (sem prazo fixo)"};
 const LIMITS = {mensal:[2,3],bimestral:[4,6],trimestral:[5,7],semestral:[9,12],anual:[14,17],variavel:[9,12]};
+const MESES = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
 
-/* ---------- dados: JSON central (atualizado pelo robô) + ajustes locais ---------- */
-let base = [];          // catálogo vindo de data/tabelas.json
-let meta = null;
-let local = loadLocal(); // {edits:{id:{...,ts}}, custom:[...], removed:[ids]}
-let items = [];
+let items = [], meta = null;
 
-function loadLocal(){
-  try{const r=localStorage.getItem(KEY); if(r){const o=JSON.parse(r); if(o&&o.edits) return o;}}catch(e){}
-  return {edits:{},custom:[],removed:[]};
-}
-function saveLocal(){ try{localStorage.setItem(KEY,JSON.stringify(local));}catch(e){} }
-
-function rebuild(){
-  const rem=new Set(local.removed);
-  items=base.filter(b=>!rem.has(b.id)).map(b=>{
-    const e=local.edits[b.id];
-    if(!e) return {...b};
-    /* ajuste seu só vale se for igual ou mais novo que a leitura automática */
-    if(e.ts >= (b.atualizado||"")) return {...b,...e.data};
-    return {...b, verificada:e.data.verificada||b.verificada};
-  }).concat(local.custom.map(c=>({...c})));
-}
-function persist(x){
-  const data={nome:x.nome,orgao:x.orgao,esfera:x.esfera,ufs:x.ufs,municipio:x.municipio,area:x.area,freq:x.freq,ref:x.ref,url:x.url,verificada:x.verificada,fonte:x.fonte,nota:x.nota};
-  if(String(x.id).startsWith("c")){
-    const i=local.custom.findIndex(c=>c.id===x.id);
-    if(i>=0) local.custom[i]={...x}; else local.custom.push({...x});
-  } else local.edits[x.id]={ts:todayISO(),data};
-  saveLocal();
-}
-
-async function loadBase(){
-  try{
-    const r=await fetch("tabelas.json?_="+Date.now(),{cache:"no-store"});
-    if(!r.ok) throw new Error(r.status);
-    const j=await r.json();
-    base=j.itens; meta=j.meta||null;
-  }catch(e){
-    try{ base=JSON.parse(document.getElementById("snapshot").textContent).itens; meta=null; }catch(e2){ base=[]; }
-    setAuto("Não foi possível carregar os dados atualizados; mostrando a cópia de 21/09/2026.",true);
-    return;
-  }
-  const fs=meta&&meta.fontes?Object.entries(meta.fontes):[];
-  const falhas=fs.filter(([k,v])=>!v.ok).map(([k])=>k);
-  if(meta&&meta.ultima_execucao){
-    const d=new Date(meta.ultima_execucao);
-    let t="Dados atualizados automaticamente em <b>"+d.toLocaleDateString("pt-BR")+" às "+d.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})+"</b>.";
-    if(falhas.length) t+=" Não consegui ler agora: "+falhas.map(esc).join(", ")+" (mantido o último valor conhecido).";
-    setAuto(t,falhas.length>0);
-  } else setAuto("Dados carregados. A primeira leitura automática ainda não rodou.",true);
-}
-function setAuto(html,warn){const e=document.getElementById("auto");e.innerHTML=html;e.className="auto"+(warn?" warn":"")}
-
-/* ---------- utilidades ---------- */
 const $ = s=>document.querySelector(s);
 const esc = s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove("show"),2200)}
 function todayISO(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
 function fmtDate(iso){const [y,m,d]=iso.split("-");return d+"/"+m+"/"+y}
 function fmtRef(r){if(!r)return "—";const [y,m]=r.split("-");return m+"/"+y}
-function daysSince(iso){return Math.floor((new Date(todayISO())-new Date(iso))/86400000)}
+function fmtRefLong(r){if(!r)return "Não informado";const [y,m]=r.split("-");return MESES[+m-1]+" de "+y}
+function setAuto(html,warn){const e=$("#auto");e.innerHTML=html;e.className="auto"+(warn?" warn":"")}
+
+async function loadBase(){
+  try{
+    const r=await fetch("tabelas.json?_="+Date.now(),{cache:"no-store"});
+    if(!r.ok) throw new Error(r.status);
+    const j=await r.json();
+    items=j.itens; meta=j.meta||null;
+  }catch(e){
+    try{ items=JSON.parse(document.getElementById("snapshot").textContent).itens; }catch(e2){ items=[]; }
+    setAuto("Não foi possível carregar os dados atualizados; mostrando a cópia de 21/09/2026.",true);
+    return;
+  }
+  if(meta&&meta.ultima_execucao){
+    const d=new Date(meta.ultima_execucao);
+    setAuto("Dados atualizados automaticamente em <b>"+d.toLocaleDateString("pt-BR")+" às "+d.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})+"</b>.",false);
+  } else setAuto("Dados carregados.",false);
+}
 
 function status(x){
   if(!x.ref) return {c:"b-none",t:"Sem referência"};
@@ -772,10 +724,7 @@ function status(x){
 }
 
 function fillSelects(){
-  const cur=$("#uf").value;
   $("#uf").innerHTML='<option value="">Selecione o estado</option>'+Object.entries(UFS).map(([k,v])=>`<option value="${k}">${k} – ${v}</option>`).join("");
-  $("#uf").value=cur;
-  $("#f_uf").innerHTML='<option value="*">Todos (nacional)</option>'+Object.entries(UFS).map(([k,v])=>`<option value="${k}">${k} – ${v}</option>`).join("");
 }
 function munsOf(uf){return [...new Set(items.filter(x=>x.municipio&&x.ufs.includes(uf)).map(x=>x.municipio))].sort((a,b)=>a.localeCompare(b,"pt-BR"))}
 function fillMun(){
@@ -803,17 +752,15 @@ function fillTab(list){
   sel.value=list.some(x=>x.id===cur)?cur:"";
 }
 function searchUrl(x){return "https://www.google.com/search?q="+encodeURIComponent(x.nome+" "+x.orgao+" tabela de preços site oficial")}
+function linkOf(x){return x.url?{href:x.url,txt:"Página oficial e download"}:{href:searchUrl(x),txt:"Buscar página oficial"}}
 
 function rowHtml(x){
-  const s=status(x);
-  let conf='<small>Não confirmada por você</small>';
-  if(x.verificada){const d=daysSince(x.verificada);conf=`<small>Confirmada em ${fmtDate(x.verificada)}${d>35?` (há ${d} dias)`:""}</small>`}
-  const link=x.url?`<a href="${esc(x.url)}" target="_blank" rel="noopener noreferrer">Página oficial e download</a>`:`<a href="${esc(searchUrl(x))}" target="_blank" rel="noopener noreferrer">Buscar página oficial</a>`;
+  const s=status(x), l=linkOf(x);
   return `<li class="row" data-id="${esc(x.id)}">
-    <div class="name"><strong>${esc(x.nome)}</strong><span>${esc(x.orgao)}</span><span>${esc(x.area)}</span>${x.fonte?`<div class="src">Mês: ${esc(x.fonte)}</div>`:""}${x.nota?`<div class="note">${esc(x.nota)}</div>`:""}</div>
-    <div class="ref"><label for="r_${esc(x.id)}">Mês de referência</label><input type="month" id="r_${esc(x.id)}" data-act="ref" value="${esc(x.ref)}"><small>${FREQ[x.freq]||""}</small></div>
-    <div class="status"><span class="badge ${s.c}">${s.t}</span>${conf}<button class="btn small" data-act="ok">Confirmei hoje</button></div>
-    <div class="links">${link}<button class="btn small" data-act="edit">Editar</button></div>
+    <div class="name"><strong>${esc(x.nome)}</strong><span>${esc(x.orgao)}</span><span>${esc(x.area)}</span></div>
+    <div class="ref"><label>Mês de referência</label><div class="mes">${esc(fmtRefLong(x.ref))}</div><small>${esc(FREQ[x.freq]||"")}</small></div>
+    <div class="status"><span class="badge ${s.c}">${s.t}</span></div>
+    <div class="links"><a href="${esc(l.href)}" target="_blank" rel="noopener noreferrer">${l.txt}</a><button class="btn small" data-act="info">Consultar</button></div>
   </li>`;
 }
 
@@ -826,8 +773,8 @@ function render(){
   const shown=(tabId?list.filter(x=>x.id===tabId):list).slice().sort((a,b)=>a.nome.localeCompare(b.nome,"pt-BR"));
   const local_=UFS[uf]+(mun?" · "+mun:"");
   let html=`<div class="stamp"><div><small>Local</small><strong>${esc(local_)}</strong></div><div><small>Tabelas exibidas</small><strong class="n">${shown.length}</strong></div><div><small>Consulta em</small><strong class="n">${fmtDate(todayISO())}</strong></div></div>`;
-  if(!tabId&&!list.some(x=>x.esfera==="Estadual")) html+=`<div class="empty" style="margin-bottom:14px">Ainda não há tabela estadual cadastrada para ${esc(UFS[uf])}. Abaixo estão as tabelas federais; use "Adicionar tabela" para incluir a do estado.</div>`;
-  if(!shown.length){out.innerHTML=html+'<div class="empty">Nenhuma tabela cadastrada para este local. Use "Adicionar tabela" para incluir.</div>';return}
+  if(!tabId&&!list.some(x=>x.esfera==="Estadual")) html+=`<div class="empty" style="margin-bottom:14px">Ainda não há tabela estadual cadastrada para ${esc(UFS[uf])}. Abaixo estão as tabelas federais.</div>`;
+  if(!shown.length){out.innerHTML=html+'<div class="empty">Nenhuma tabela cadastrada para este local.</div>';return}
   html+='<div class="head" aria-hidden="true"><div>Tabela</div><div>Referência vigente</div><div>Situação</div><div>Download</div></div>';
   for(const g of ["Federal","Estadual","Municipal"]){
     const gl=shown.filter(x=>x.esfera===g); if(!gl.length) continue;
@@ -840,58 +787,30 @@ $("#uf").addEventListener("change",()=>{$("#mun").value="";$("#tab").value="";re
 $("#mun").addEventListener("change",()=>{$("#tab").value="";render()});
 $("#tab").addEventListener("change",render);
 
+/* consulta: detalhes da tabela */
 $("#out").addEventListener("click",e=>{
-  const b=e.target.closest("[data-act]"); if(!b) return;
-  const id=b.closest(".row").dataset.id, x=items.find(i=>i.id===id); if(!x) return;
-  if(b.dataset.act==="ok"){x.verificada=todayISO();persist(x);rebuild();render();toast("Confirmação registrada")}
-  if(b.dataset.act==="edit") openDlg(x);
+  const b=e.target.closest("[data-act=info]"); if(!b) return;
+  const x=items.find(i=>i.id===b.closest(".row").dataset.id); if(!x) return;
+  const s=status(x), l=linkOf(x);
+  const esf=x.esfera+(x.municipio?" – "+x.municipio:(x.ufs[0]&&x.ufs[0]!=="*"?" – "+(UFS[x.ufs[0]]||x.ufs[0]):" (todo o país)"));
+  const rows=[
+    ["Órgão responsável",x.orgao],
+    ["Esfera",esf],
+    ["Área de obra",x.area],
+    ["Mês de referência vigente",fmtRefLong(x.ref)],
+    ["Frequência de atualização",FREQ[x.freq]||"—"],
+    ["Situação",s.t],
+  ];
+  if(x.fonte) rows.push(["Origem do mês",x.fonte]);
+  if(x.nota) rows.push(["Observação",x.nota]);
+  $("#dTitle").textContent=x.nome;
+  $("#dList").innerHTML=rows.map(r=>`<dt>${esc(r[0])}</dt><dd>${esc(r[1])}</dd>`).join("");
+  const a=$("#dLink"); a.href=l.href; a.textContent=l.txt;
+  $("#dlg").showModal();
 });
-$("#out").addEventListener("change",e=>{
-  if(e.target.dataset.act!=="ref") return;
-  const id=e.target.closest(".row").dataset.id, x=items.find(i=>i.id===id); if(!x) return;
-  x.ref=e.target.value; x.verificada=todayISO(); x.fonte="Informado por você";
-  persist(x); rebuild(); render(); toast("Mês atualizado e confirmado hoje");
-});
+$("#dClose").addEventListener("click",()=>$("#dlg").close());
+$("#dlg").addEventListener("click",e=>{if(e.target.id==="dlg")$("#dlg").close()});
 
-/* ---------- diálogo ---------- */
-let editing=null;
-function openDlg(x){
-  editing=x||null;
-  $("#dlgTitle").textContent=x?"Editar tabela":"Adicionar tabela";
-  $("#f_nome").value=x?.nome||""; $("#f_orgao").value=x?.orgao||"";
-  $("#f_esfera").value=x?.esfera||"Estadual";
-  $("#f_uf").value=x?(x.ufs.includes("*")?"*":x.ufs[0]):($("#uf").value||"*");
-  $("#f_mun").value=x?.municipio||($("#mun").value||"");
-  $("#f_area").value=x?.area||""; $("#f_freq").value=x?.freq||"variavel";
-  $("#f_ref").value=x?.ref||""; $("#f_url").value=x?.url||"";
-  $("#del").style.display=x?"":"none";
-  syncMun(); $("#dlg").showModal();
-}
-function syncMun(){$("#munBox").style.display=$("#f_esfera").value==="Municipal"?"":"none"}
-$("#f_esfera").addEventListener("change",syncMun);
-$("#add").addEventListener("click",()=>openDlg(null));
-$("#cancel").addEventListener("click",()=>$("#dlg").close());
-$("#form").addEventListener("submit",e=>{
-  const esfera=$("#f_esfera").value, uf=$("#f_uf").value;
-  const data={nome:$("#f_nome").value.trim(),orgao:$("#f_orgao").value.trim(),esfera,ufs:[esfera==="Federal"?"*":uf],municipio:esfera==="Municipal"?$("#f_mun").value.trim():"",area:$("#f_area").value.trim(),freq:$("#f_freq").value,ref:$("#f_ref").value,url:$("#f_url").value.trim()};
-  if(editing){
-    const refChanged=data.ref!==editing.ref;
-    Object.assign(editing,data);
-    if(refChanged){editing.verificada=todayISO();editing.fonte="Informado por você"}
-    persist(editing);
-  } else {
-    persist({id:"c"+Date.now(),verificada:data.ref?todayISO():"",fonte:data.ref?"Informado por você":"",nota:"",atualizado:"",...data});
-  }
-  rebuild(); render(); toast("Tabela salva");
-});
-$("#del").addEventListener("click",()=>{
-  if(!editing||!confirm("Remover \""+editing.nome+"\" da sua visualização?")) return;
-  if(String(editing.id).startsWith("c")) local.custom=local.custom.filter(c=>c.id!==editing.id);
-  else {local.removed.push(editing.id);delete local.edits[editing.id]}
-  saveLocal(); $("#dlg").close(); rebuild(); render(); toast("Tabela removida");
-});
-
-/* ---------- ferramentas ---------- */
 $("#copy").addEventListener("click",()=>{
   const uf=$("#uf").value; if(!uf){toast("Escolha um estado primeiro");return}
   const mun=$("#mun").value;
@@ -900,16 +819,13 @@ $("#copy").addEventListener("click",()=>{
   const fallback=()=>{const t=document.createElement("textarea");t.value=txt;document.body.appendChild(t);t.select();try{document.execCommand("copy");toast("Lista copiada")}catch(e){toast("Não foi possível copiar")}t.remove()};
   if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(()=>toast("Lista copiada"),fallback); else fallback();
 });
-$("#reset").addEventListener("click",()=>{
-  if(confirm("Descartar suas confirmações, edições e tabelas adicionadas neste navegador? Os dados automáticos continuam.")){local={edits:{},custom:[],removed:[]};saveLocal();rebuild();render();toast("Alterações descartadas")}
-});
 
-$("#rodape").textContent="Os meses são lidos automaticamente todos os dias. Onde aparece \"i9 Orçamentos (agregador)\", o mês vem de um site de terceiros que replica as tabelas oficiais e pode atrasar em relação ao órgão; confira na página oficial e clique em \"Confirmei hoje\". Suas confirmações, edições e tabelas adicionadas ficam salvas só neste navegador.";
+$("#rodape").textContent="Os meses são lidos automaticamente todos os dias. Onde o mês vem de um site de terceiros (i9 Orçamentos), ele pode atrasar em relação ao órgão responsável; confira na página oficial antes de usar em um orçamento.";
 
 (async function init(){
   fillSelects();
   await loadBase();
-  rebuild(); render();
+  render();
 })();
 </script>
 </body>

@@ -1,7 +1,7 @@
 {
  "meta": {
   "gerado_em": "2026-09-21T00:00:00",
-  "ultima_execucao": "2026-09-22T09:07:02Z",
+  "ultima_execucao": "2026-09-23T09:07:01Z",
   "fontes": {
    "i9": {
     "ok": true,
@@ -75,12 +75,12 @@
    "municipio": "Rio de Janeiro",
    "area": "Obras e serviços municipais",
    "freq": "mensal",
-   "ref": "2026-06",
+   "ref": "2026-08",
    "url": "",
    "verificada": "",
-   "fonte": "i9 Orçamentos (agregador), liberada em 15/07/2026",
+   "fonte": "i9 Orçamentos (agregador), liberada em 22/09/2026; lido automaticamente em 23/09/2026",
    "nota": "",
-   "atualizado": ""
+   "atualizado": "2026-09-23"
   },
   {
    "id": "obrassp",
@@ -129,12 +129,12 @@
    "municipio": "",
    "area": "Infraestrutura ferroviária metropolitana",
    "freq": "variavel",
-   "ref": "2026-04",
+   "ref": "2026-06",
    "url": "",
    "verificada": "",
-   "fonte": "i9 Orçamentos (agregador), liberada em 13/07/2026",
+   "fonte": "i9 Orçamentos (agregador), liberada em 22/09/2026; lido automaticamente em 23/09/2026",
    "nota": "",
-   "atualizado": ""
+   "atualizado": "2026-09-23"
   },
   {
    "id": "derSP",
@@ -165,12 +165,12 @@
    "municipio": "São Paulo",
    "area": "Infraestrutura urbana e obras",
    "freq": "variavel",
-   "ref": "2026-01",
+   "ref": "2026-07",
    "url": "",
    "verificada": "",
-   "fonte": "i9 Orçamentos (agregador), liberada em 09/04/2026",
+   "fonte": "i9 Orçamentos (agregador), liberada em 22/09/2026; lido automaticamente em 23/09/2026",
    "nota": "",
-   "atualizado": ""
+   "atualizado": "2026-09-23"
   },
   {
    "id": "sicor",
@@ -327,12 +327,12 @@
    "municipio": "",
    "area": "Saneamento",
    "freq": "variavel",
-   "ref": "2023-10",
+   "ref": "2025-08",
    "url": "",
    "verificada": "",
-   "fonte": "i9 Orçamentos (agregador), liberada em 24/09/2024",
+   "fonte": "i9 Orçamentos (agregador), liberada em 21/09/2026; lido automaticamente em 23/09/2026",
    "nota": "",
-   "atualizado": ""
+   "atualizado": "2026-09-23"
   },
   {
    "id": "derESedif",
@@ -417,12 +417,12 @@
    "municipio": "",
    "area": "Edificações",
    "freq": "variavel",
-   "ref": "2025-02",
+   "ref": "2026-06",
    "url": "",
    "verificada": "",
-   "fonte": "i9 Orçamentos (agregador), liberada em 14/04/2025",
+   "fonte": "i9 Orçamentos (agregador), liberada em 22/09/2026; lido automaticamente em 23/09/2026",
    "nota": "",
-   "atualizado": ""
+   "atualizado": "2026-09-23"
   },
   {
    "id": "smop",

@@ -1,7 +1,7 @@
 {
  "meta": {
   "gerado_em": "2026-09-21T00:00:00",
-  "ultima_execucao": "2026-09-24T09:07:53Z",
+  "ultima_execucao": "2026-09-25T09:07:12Z",
   "fontes": {
    "i9": {
     "ok": true,
@@ -111,12 +111,12 @@
    "municipio": "",
    "area": "Construção e reforma de escolas",
    "freq": "variavel",
-   "ref": "2026-04",
+   "ref": "2026-07",
    "url": "",
    "verificada": "",
-   "fonte": "i9 Orçamentos (agregador), liberada em 21/07/2026",
+   "fonte": "i9 Orçamentos (agregador), liberada em 23/09/2026; lido automaticamente em 25/09/2026",
    "nota": "",
-   "atualizado": ""
+   "atualizado": "2026-09-25"
   },
   {
    "id": "sptm",
@@ -255,12 +255,12 @@
    "municipio": "",
    "area": "Edificações e infraestrutura",
    "freq": "mensal",
-   "ref": "2026-06",
+   "ref": "2026-07",
    "url": "",
    "verificada": "",
-   "fonte": "i9 Orçamentos (agregador), liberada em 20/08/2026",
+   "fonte": "i9 Orçamentos (agregador), liberada em 23/09/2026; lido automaticamente em 25/09/2026",
    "nota": "",
-   "atualizado": ""
+   "atualizado": "2026-09-25"
   },
   {
    "id": "sedop",

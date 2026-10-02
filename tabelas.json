@@ -1,7 +1,7 @@
 {
  "meta": {
   "gerado_em": "2026-09-21T00:00:00",
-  "ultima_execucao": "2026-10-01T09:09:18Z",
+  "ultima_execucao": "2026-10-02T09:09:33Z",
   "fontes": {
    "i9": {
     "ok": true,
@@ -93,12 +93,12 @@
    "municipio": "",
    "area": "Construção civil",
    "freq": "variavel",
-   "ref": "2026-06",
+   "ref": "2026-08",
    "url": "",
    "verificada": "",
-   "fonte": "i9 Orçamentos (agregador), liberada em 10/07/2026",
+   "fonte": "i9 Orçamentos (agregador), liberada em 29/09/2026; lido automaticamente em 02/10/2026",
    "nota": "",
-   "atualizado": ""
+   "atualizado": "2026-10-02"
   },
   {
    "id": "educsp",

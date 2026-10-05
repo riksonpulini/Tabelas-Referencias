@@ -1,7 +1,7 @@
 {
  "meta": {
   "gerado_em": "2026-09-21T00:00:00",
-  "ultima_execucao": "2026-10-04T15:55:55Z",
+  "ultima_execucao": "2026-10-05T09:10:56Z",
   "fontes": {
    "i9": {
     "ok": true,
@@ -39,12 +39,12 @@
    "municipio": "",
    "area": "Rodovias, ferrovias, hidrovias e obras de arte",
    "freq": "trimestral",
-   "ref": "2026-04",
+   "ref": "2026-07",
    "url": "https://www.gov.br/dnit/pt-br/assuntos/planejamento-e-pesquisa/custos-referenciais/sistemas-de-custos/sicro/relatorios/relatorios-sicro",
    "verificada": "",
-   "fonte": "i9 Orçamentos (agregador), liberada em 09/07/2026",
+   "fonte": "i9 Orçamentos (agregador), liberada em 03/10/2026; lido automaticamente em 05/10/2026",
    "nota": "",
-   "atualizado": ""
+   "atualizado": "2026-10-05"
   },
   {
    "id": "emop",
@@ -219,12 +219,12 @@
    "municipio": "Belo Horizonte",
    "area": "Obras e serviços municipais",
    "freq": "variavel",
-   "ref": "2026-04",
+   "ref": "2026-07",
    "url": "",
    "verificada": "",
-   "fonte": "i9 Orçamentos (agregador), liberada em 19/06/2026",
+   "fonte": "i9 Orçamentos (agregador), liberada em 03/10/2026; lido automaticamente em 05/10/2026",
    "nota": "",
-   "atualizado": ""
+   "atualizado": "2026-10-05"
   },
   {
    "id": "seinfraCE",

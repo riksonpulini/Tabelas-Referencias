@@ -1,7 +1,7 @@
 {
  "meta": {
   "gerado_em": "2026-09-21T00:00:00",
-  "ultima_execucao": "2026-10-06T09:09:16Z",
+  "ultima_execucao": "2026-10-07T09:09:24Z",
   "fontes": {
    "i9": {
     "ok": true,
@@ -255,12 +255,12 @@
    "municipio": "",
    "area": "Edificações e infraestrutura",
    "freq": "mensal",
-   "ref": "2026-07",
+   "ref": "2026-08",
    "url": "",
    "verificada": "",
-   "fonte": "i9 Orçamentos (agregador), liberada em 23/09/2026; lido automaticamente em 25/09/2026",
+   "fonte": "i9 Orçamentos (agregador), liberada em 06/10/2026; lido automaticamente em 07/10/2026",
    "nota": "",
-   "atualizado": "2026-09-25"
+   "atualizado": "2026-10-07"
   },
   {
    "id": "sedop",

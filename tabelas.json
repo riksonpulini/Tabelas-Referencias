@@ -1,7 +1,7 @@
 {
  "meta": {
   "gerado_em": "2026-09-21T00:00:00",
-  "ultima_execucao": "2026-10-12T09:11:27Z",
+  "ultima_execucao": "2026-10-13T09:10:48Z",
   "fontes": {
    "i9": {
     "ok": true,
@@ -453,12 +453,12 @@
    "municipio": "",
    "area": "Saneamento",
    "freq": "variavel",
-   "ref": "2025-06",
+   "ref": "2026-06",
    "url": "",
    "verificada": "",
-   "fonte": "i9 Orçamentos (agregador), liberada em 07/10/2025",
+   "fonte": "i9 Orçamentos (agregador), liberada em 11/10/2026; lido automaticamente em 13/10/2026",
    "nota": "",
-   "atualizado": ""
+   "atualizado": "2026-10-13"
   },
   {
    "id": "derRO",

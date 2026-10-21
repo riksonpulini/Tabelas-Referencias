@@ -1,7 +1,7 @@
 {
  "meta": {
   "gerado_em": "2026-09-21T00:00:00",
-  "ultima_execucao": "2026-10-20T09:22:58Z",
+  "ultima_execucao": "2026-10-21T09:24:06Z",
   "fontes": {
    "i9": {
     "ok": true,
@@ -183,12 +183,12 @@
    "municipio": "",
    "area": "Edificações",
    "freq": "variavel",
-   "ref": "2026-04",
+   "ref": "2026-07",
    "url": "",
    "verificada": "",
-   "fonte": "i9 Orçamentos (agregador), liberada em 28/06/2026",
+   "fonte": "i9 Orçamentos (agregador), liberada em 20/10/2026; lido automaticamente em 21/10/2026",
    "nota": "Referencial em uso para edificações no estado.",
-   "atualizado": ""
+   "atualizado": "2026-10-21"
   },
   {
    "id": "setop",

@@ -1,7 +1,7 @@
 {
  "meta": {
   "gerado_em": "2026-09-21T00:00:00",
-  "ultima_execucao": "2026-11-08T15:43:17Z",
+  "ultima_execucao": "2026-11-09T19:25:39Z",
   "fontes": {
    "i9": {
     "ok": true,
@@ -129,12 +129,12 @@
    "municipio": "",
    "area": "Infraestrutura ferroviária metropolitana",
    "freq": "variavel",
-   "ref": "2026-07",
+   "ref": "2026-08",
    "url": "",
    "verificada": "",
-   "fonte": "i9 Orçamentos (agregador), liberada em 15/10/2026; lido automaticamente em 16/10/2026",
+   "fonte": "i9 Orçamentos (agregador), liberada em 08/11/2026; lido automaticamente em 09/11/2026",
    "nota": "",
-   "atualizado": "2026-10-16"
+   "atualizado": "2026-11-09"
   },
   {
    "id": "derSP",
@@ -345,12 +345,12 @@
    "municipio": "",
    "area": "Edificações",
    "freq": "variavel",
-   "ref": "2026-05",
+   "ref": "2026-09",
    "url": "https://der.es.gov.br/referencial-de-precos-edificacoes",
    "verificada": "",
-   "fonte": "i9 Orçamentos (agregador), liberada em 28/08/2026",
+   "fonte": "i9 Orçamentos (agregador), liberada em 07/11/2026; lido automaticamente em 09/11/2026",
    "nota": "",
-   "atualizado": ""
+   "atualizado": "2026-11-09"
   },
   {
    "id": "derESrod",
